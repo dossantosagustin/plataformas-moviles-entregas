@@ -1,0 +1,36 @@
+body{
+    /*1*/
+    h1 {
+        text-align: center;
+    }
+    /*2*/
+    p {
+        font-family: serif;
+    }
+    /*3*/
+    #primer-parrafo {
+        background-color: #CEE;
+    }
+    /*4*/
+    #primer-parrafo em {
+        color: #933;
+    }
+    /*5*/
+    a {
+        outline: 1px solid #333 !important;
+    }
+    /*7*/
+    p {
+        background-color: rgba(190, 120, 240, 0.6);
+    }
+    /*bonus tracks*/
+    /*1*/
+	p.fuente.parrafo {
+    	color: #000 !important;
+	}
+    /*2*/
+    .complicado {
+        font-weight: bold;
+        color: #C62 !important;
+    }
+}
