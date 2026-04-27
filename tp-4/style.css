@@ -1,7 +1,7 @@
 /*1*/
-@media (min-width: 400px) {
+@media (min-width: 401px) {
   body {
-    background-color: rgb(40, 60, 80);
+    background-color: rgb(40, 60, 80) !important;
   }
 }
 /*2*/
@@ -45,14 +45,14 @@
 /*8*/
 @media screen and (min-width: 800px) and (max-width: 899px) {
   img {
-    display: none;
+    display: none !important;
   }
 }
 /*9*/
 @media screen and (min-width: 200px) and (max-width: 400px) {
   img {
-    height: 400px;
-    object-fit: cover;
+    height: 400px !important;
+    object-fit: cover !important;
   }
 }
 /*10*/
