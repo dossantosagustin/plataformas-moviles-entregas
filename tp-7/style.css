@@ -1,0 +1,9 @@
+body {
+    #articulo {
+        text-align: center;
+        font-weight: normal !important;
+    }
+    p {
+        font-family: sans-serif;
+    }
+}
