@@ -39,9 +39,4 @@ body {
         object-fit: cover;
         display: block;
     }
-
-    .polaroid p {
-        margin-top: 10px;
-        font-size: 14px;
-    }
 }
