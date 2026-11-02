@@ -1,84 +1,79 @@
-const listaPokemon = document.getElementById("lista-pokemon");
-const cargando = document.getElementById("cargando");
-const botonCargar = document.getElementById("cargar-mas");
-
-let cantidad = 151;
-
-//cargar los pokemon
-async function cargarPokemon() {
-    cargando.style.display = "block";
-    botonCargar.disabled = true;
-
-    try {
-        const respuesta = await fetch(
-            "https://pokeapi.co/api/v2/pokemon?limit=" + cantidad
-        );
-
-        const datos = await respuesta.json();
-        listaPokemon.innerHTML = "";
-
-        for (const pokemon of datos.results) {
-            const respuestaPokemon = await fetch(pokemon.url);
-            const detalle = await respuestaPokemon.json();
-
-            let tipos = "";
-
-            for (const tipo of detalle.types) {
-                tipos += `<span class="pokemon-tipo">${tipo.type.name}</span>`;
-            }
-
-            listaPokemon.innerHTML += `
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="card pokemon-card shadow-sm p-3">
-                        <h5>${detalle.name}</h5>
-                        <img src="${detalle.sprites.front_default}"
-                             class="pokemon-img mx-auto"
-                             alt="${detalle.name}">
-                        <div class="mb-3">${tipos}</div>
-                        <button class="btn btn-primary"
-                            onclick="verMas('${pokemon.url}')">
-                            Ver más
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-    } catch (error) {
-        console.log("Error al cargar los Pokémon");
+var consolas = [
+    {
+        nombre: "PlayStation 2",
+        fabricante: "Sony",
+        anio: 2000,
+        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/PS2-Versions.jpg"
+    },
+    {
+        nombre: "Game Boy",
+        fabricante: "Nintendo",
+        anio: 1989,
+        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-Game-Boy-FL.jpg"
+    },
+    {
+        nombre: "Mega Drive",
+        fabricante: "SEGA",
+        anio: 1988,
+        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Sega-Genesis-Mk2-Console-Set.jpg"
+    },
+    {
+        nombre: "Nintendo 64",
+        fabricante: "Nintendo",
+        anio: 1996,
+        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-64-Console-Set.jpg"
+    },
+    {
+        nombre: "Xbox 360",
+        fabricante: "Microsoft",
+        anio: 2005,
+        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Xbox-360-Pro-wController.jpg"
+    },
+    {
+        nombre: "Nintendo DS",
+        fabricante: "Nintendo",
+        anio: 2004,
+        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-DS-Fat-Blue.jpg"
     }
+];
 
-    cargando.style.display = "none";
-    botonCargar.disabled = false;
+var contenedor = document.getElementById("consolas");
+var datos = document.getElementById("Datos");
+
+// Elegimos tres consolas diferentes
+var elegidas = [];
+
+while (elegidas.length < 3) {
+    var consola = consolas[Math.floor(Math.random() * consolas.length)];
+
+    if (!elegidas.includes(consola)) {
+        elegidas.push(consola);
+    }
 }
 
-//habilidades y movimientos
-async function verMas(url) {
-    const respuesta = await fetch(url);
-    const pokemon = await respuesta.json();
+// Mostramos las tres consolas
+for (var i = 0; i < elegidas.length; i++) {
+    var consola = elegidas[i];
 
-    let habilidades = "";
-    let movimientos = "";
+    var columna = document.createElement("div");
+    columna.className = "col-12 col-md-4";
 
-    for (const item of pokemon.abilities) {
-        habilidades += item.ability.name + ", ";
-    }
+    var imagen = document.createElement("img");
+    imagen.src = consola.imagen;
+    imagen.alt = consola.nombre;
+    imagen.className = "img-fluid rounded";
 
-    for (const item of pokemon.moves.slice(0, 4)) {
-        movimientos += item.move.name + ", ";
-    }
+    columna.appendChild(imagen);
+    contenedor.appendChild(columna);
 
-    alert(
-        "Pokémon: " + pokemon.name +
-        "\nHabilidades: " + habilidades +
-        "\nMovimientos: " + movimientos
-    );
+    var item = document.createElement("li");
+    item.className = "list-inline-item";
+
+    var texto = document.createElement("span");
+    texto.className = "badge bg-primary";
+    texto.textContent = consola.nombre + " - " +
+        consola.fabricante + " - " + consola.anio;
+
+    item.appendChild(texto);
+    datos.appendChild(item);
 }
-
-//cargar más pokmon
-botonCargar.addEventListener("click", function() {
-    cantidad += 20;
-    cargarPokemon();
-});
-
-
-cargarPokemon();
