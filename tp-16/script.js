@@ -1,79 +1,69 @@
-var consolas = [
-    {
-        nombre: "PlayStation 2",
-        fabricante: "Sony",
-        anio: 2000,
-        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/PS2-Versions.jpg"
-    },
-    {
-        nombre: "Game Boy",
-        fabricante: "Nintendo",
-        anio: 1989,
-        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-Game-Boy-FL.jpg"
-    },
-    {
-        nombre: "Mega Drive",
-        fabricante: "SEGA",
-        anio: 1988,
-        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Sega-Genesis-Mk2-Console-Set.jpg"
-    },
-    {
-        nombre: "Nintendo 64",
-        fabricante: "Nintendo",
-        anio: 1996,
-        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-64-Console-Set.jpg"
-    },
-    {
-        nombre: "Xbox 360",
-        fabricante: "Microsoft",
-        anio: 2005,
-        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Xbox-360-Pro-wController.jpg"
-    },
-    {
-        nombre: "Nintendo DS",
-        fabricante: "Nintendo",
-        anio: 2004,
-        imagen: "https://commons.wikimedia.org/wiki/Special:FilePath/Nintendo-DS-Fat-Blue.jpg"
-    }
-];
+"use strict";
 
-var contenedor = document.getElementById("consolas");
-var datos = document.getElementById("Datos");
+const API_URL = "https://uselessfacts.jsph.pl/api/v2/facts/random";
 
-// Elegimos tres consolas diferentes
-var elegidas = [];
+function showFact(fact, textElement, sourceElement) {
+	textElement.textContent = fact.text;
 
-while (elegidas.length < 3) {
-    var consola = consolas[Math.floor(Math.random() * consolas.length)];
-
-    if (!elegidas.includes(consola)) {
-        elegidas.push(consola);
-    }
+	if (fact.source_url) {
+		sourceElement.href = fact.source_url;
+		sourceElement.hidden = false;
+	} else {
+		sourceElement.hidden = true;
+	}
 }
 
-// Mostramos las tres consolas
-for (var i = 0; i < elegidas.length; i++) {
-    var consola = elegidas[i];
+async function getRandomFact() {
+	const response = await fetch(API_URL);
 
-    var columna = document.createElement("div");
-    columna.className = "col-12 col-md-4";
+	if (!response.ok) {
+		throw new Error("No se pudo obtener el dato.");
+	}
 
-    var imagen = document.createElement("img");
-    imagen.src = consola.imagen;
-    imagen.alt = consola.nombre;
-    imagen.className = "img-fluid rounded";
+	const fact = await response.json();
 
-    columna.appendChild(imagen);
-    contenedor.appendChild(columna);
+	if (!fact || typeof fact.text !== "string") {
+		throw new Error("La respuesta de la API no contiene un dato válido.");
+	}
 
-    var item = document.createElement("li");
-    item.className = "list-inline-item";
-
-    var texto = document.createElement("span");
-    texto.className = "badge bg-primary";
-    texto.textContent = consola.nombre + " - " +
-        consola.fabricante + " - " + consola.anio;
-
-    item.appendChild(texto);
-    datos.appendChild(item);
+	return fact;
 }
+
+async function loadDailyFact() {
+	const factElement = document.getElementById("daily-fact");
+	const sourceElement = document.getElementById("daily-source");
+
+	try {
+		const fact = await getRandomFact();
+		showFact(fact, factElement, sourceElement);
+	} catch (error) {
+		factElement.textContent = "No se pudo cargar el dato. Comprueba tu conexión e inténtalo más tarde.";
+	}
+}
+
+async function loadRandomFact() {
+	const button = document.getElementById("random-button");
+	const factElement = document.getElementById("random-fact");
+	const sourceElement = document.getElementById("random-source");
+
+	button.disabled = true;
+	button.textContent = "Buscando...";
+	factElement.hidden = false;
+	factElement.textContent = "Cargando dato...";
+	sourceElement.hidden = true;
+
+	try {
+		const fact = await getRandomFact();
+		showFact(fact, factElement, sourceElement);
+	} catch (error) {
+		factElement.textContent = "No se pudo cargar el dato. Inténtalo de nuevo.";
+	} finally {
+		button.disabled = false;
+		button.textContent = "Buscar otro dato";
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+	document.getElementById("random-button").addEventListener("click", loadRandomFact);
+	loadDailyFact();
+});

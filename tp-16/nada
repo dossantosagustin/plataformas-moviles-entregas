@@ -1,0 +1,14 @@
+https://uselessfacts.jsph.pl/api/v2/facts/random
+usando bootstrap y javascript lo mas parecido a c hazme un sitio estatico que me muestre el chiste del dia
+y me deje buscar chistes random con un boton. no importa que la pagina sea muy vistosa ni que sea resposive
+asi se ven los .json de la api
+
+{
+  "id": "82c3dc84e2f2025a9138752db5004ece",
+  "text": "The Pentagon, in Arlington, Virginia, has twice as many bathrooms as is necessary, because when it was built in the 1940s, the state of Virginia still had segregation laws requiring separate toilet facilities for blacks and whites.",
+  "source": "djtech.net",
+  "source_url": "http://www.djtech.net/humor/useless_facts.htm",
+  "language": "en",
+  "permalink": "https://uselessfacts.jsph.pl/api/v2/facts/82c3dc84e2f2025a9138752db5004ece"
+}
+
