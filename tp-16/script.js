@@ -1,5 +1,3 @@
-"use strict";
-
 const API_URL = "https://uselessfacts.jsph.pl/api/v2/facts/random";
 
 function showFact(fact, textElement, sourceElement) {
